@@ -1,19 +1,15 @@
 # Web4U Media Ltd website
 
-Modern Vite + React website for Web4U Media Ltd.
+Vite + React website for Web4U Media Ltd.
 
 ## Run locally
-```bash
 npm install
 npm run dev
-```
 
-## Build
-```bash
-npm run build
-```
+## Deploy on Vercel
+Import the GitHub repository in Vercel.
+Build command: `npm run build`
+Output directory: `dist`
 
-## Vercel
-Import the GitHub repository into Vercel. Build command: `npm run build`. Output directory: `dist`.
-
-Before launch, replace placeholder email/phone details in `src/main.jsx`.
+## Quote form
+The quote form is front-end only. Connect it to Formspree, Basin, Netlify Forms or your own backend before going live.

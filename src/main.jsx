@@ -1,98 +1,123 @@
-import React, { useState } from 'react'
-import { createRoot } from 'react-dom/client'
-import { ArrowRight, Check, Globe2, Server, ShieldCheck, Search, PenTool, Mail, Phone, MapPin, Star, Zap, Clock, Wrench, BarChart3, Menu, X, Sparkles, Rocket, MousePointerClick, Layers3, BadgePoundSterling, Gauge, LifeBuoy, LockKeyhole, MessageCircle } from 'lucide-react'
-import './styles.css'
-
-const nav = [
-  ['Home','home'], ['Web Design','services'], ['Pricing','pricing'], ['Hosting','hosting'], ['SEO','seo'], ['Work','work'], ['Quote','quote']
-]
-
-function Logo({compact=false, dark=false}){
-  return <div className={compact?'logo compact':'logo'} aria-label="Web4U Media logo">
-    <div className="mark" aria-hidden="true"><span className="w">W</span><span className="four">4</span><span className="u">U</span></div>
-    {!compact && <div className="word"><strong>WEB4U</strong><small>MEDIA LTD</small></div>}
-  </div>
-}
-
-const packages = [
-  {name:'Starter Website', price:'£349', note:'one-off build', text:'A sharp 1–3 page site for trades, sole traders and new local businesses.', items:['Modern responsive design','Contact / enquiry form','Basic local SEO setup','Google Analytics ready','Launch checklist included']},
-  {name:'Business Website', price:'£649', note:'one-off build', text:'A stronger 5–7 page website for businesses that want to look established and win enquiries.', items:['Custom homepage layout','Service pages that sell','Copy polish included','Performance optimisation','Blog/news option'], featured:true},
-  {name:'Growth Website', price:'£895+', note:'one-off build', text:'For businesses that need deeper content, conversion-focused pages or extra functionality.', items:['Up to 10 core pages','Advanced forms','Local landing pages','SEO content structure','Launch support & training']}
-]
-
-const care = [
-  {name:'Essential Hosting', price:'£19/mo', kicker:'For simple brochure sites', items:['Fast managed hosting','SSL certificate','Monthly backup','Basic uptime checks','Email support']},
-  {name:'Care Plan', price:'£39/mo', kicker:'Best for most small businesses', items:['Everything in Essential','Security monitoring','Up to 30 mins edits','Core updates','Priority support'], featured:true},
-  {name:'Growth Support', price:'£79/mo', kicker:'For active websites', items:['Everything in Care Plan','1 hour content edits','Monthly SEO health check','Speed review','Quarterly strategy call']}
-]
+import React, { useMemo, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { ArrowRight, Check, ChevronRight, Globe2, LineChart, Lock, Mail, Menu, MonitorSmartphone, Rocket, Search, Server, ShieldCheck, Sparkles, Star, Wrench, X } from 'lucide-react';
+import './styles.css';
 
 const services = [
-  ['Website design', Globe2, 'Modern, colourful, mobile-first websites that make a small business look trustworthy from the first click.'],
-  ['Hosting', Server, 'Reliable hosting with SSL, backups and performance checks — without the technical faff.'],
-  ['Monthly maintenance', Wrench, 'Website edits, updates, monitoring and support on a predictable monthly plan.'],
-  ['SEO foundations', Search, 'Local search structure, metadata, headings and content guidance for Somerset and UK searches.'],
-  ['Content & copy', PenTool, 'Clear English copy that explains your service, builds confidence and encourages enquiries.'],
-  ['Analytics', BarChart3, 'Simple tracking so you know what visitors click, which pages work and where enquiries come from.']
-]
+  { icon: <MonitorSmartphone />, title: 'Custom Web Design', text: 'Modern, mobile-first websites designed to make your business look established, trustworthy and easy to contact.' },
+  { icon: <Server />, title: 'Fast UK Hosting', text: 'Managed hosting on reliable infrastructure, SSL included, performance tuned and monitored for peace of mind.' },
+  { icon: <Wrench />, title: 'Monthly Care Plans', text: 'Updates, small content changes, backups, uptime checks and technical support without surprise invoices.' },
+  { icon: <Search />, title: 'Local SEO', text: 'Google-friendly structure, metadata, speed, Google Business Profile support and content built around Somerset searches.' },
+  { icon: <Rocket />, title: 'Landing Pages', text: 'Campaign-ready pages for ads, offers and lead capture with persuasive copy and simple quote journeys.' },
+  { icon: <Lock />, title: 'Security & Maintenance', text: 'SSL, backups, plugin care where needed, spam protection and regular health checks for business websites.' }
+];
 
-const examples = [
-  ['Local trades website', 'A fast brochure site for plumbers, electricians, landscapers and builders with clear service pages and enquiry forms.'],
-  ['Care & support provider', 'Accessible pages, reassuring copy and simple contact journeys for care-related services.'],
-  ['Cafe or hospitality site', 'Colourful menus, opening times, Google Maps links and mobile-first calls to action.'],
-  ['Consultant website', 'Professional profile, trust sections, pricing blocks and a quote request flow.']
-]
+const packages = [
+  { name: 'Starter Website', price: 'from £299', tag: 'Best for new businesses', items: ['1–3 page professional website', 'Mobile responsive design', 'Contact form', 'Basic SEO setup', 'Launch support'] },
+  { name: 'Business Website', price: 'from £549', tag: 'Most popular', items: ['Up to 6 pages', 'Custom design sections', 'Service pages & FAQs', 'Google Analytics ready', 'SEO page structure'] },
+  { name: 'Growth Website', price: 'from £899', tag: 'For serious lead generation', items: ['Up to 10 pages', 'Advanced quote form', 'Blog/news ready', 'Local SEO foundations', 'Conversion-focused copy'] }
+];
 
-function Header(){
-  const [open,setOpen]=useState(false)
-  return <header className="header">
-    <a href="#home" className="brand"><Logo /></a>
-    <button className="menu" onClick={()=>setOpen(!open)} aria-label="Toggle navigation">{open?<X size={22}/>:<Menu size={22}/>}</button>
-    <nav className={open?'open':''}>{nav.map(([label,id])=><a key={id} href={'#'+id} onClick={()=>setOpen(false)}>{label}</a>)}</nav>
-    <a className="navCta" href="#quote">Free quote</a>
-  </header>
+const hosting = [
+  { name: 'Hosting Lite', price: '£9/mo', items: ['SSL certificate', 'Secure UK/EU hosting', 'Email support', 'Monthly uptime check'] },
+  { name: 'Managed Hosting', price: '£19/mo', items: ['Everything in Lite', 'Backups', 'Performance checks', 'Minor technical fixes'] },
+  { name: 'Care & Growth', price: '£49/mo', items: ['Hosting included', 'Monthly updates', 'Small content changes', 'SEO health checks'] }
+];
+
+const portfolio = [
+  ['Local Trades', 'Fast brochure site with quote form and service areas.'],
+  ['Care Provider', 'Accessible website structure for services, referrals and recruitment.'],
+  ['Cafe / Takeaway', 'Menu-led mobile design with Google Maps and click-to-call.'],
+  ['Consultant', 'Premium personal-brand website with SEO landing pages.'],
+  ['Community Project', 'News-ready layout with simple content publishing.'],
+  ['Property Service', 'Lead generation site for local searches and enquiries.']
+];
+
+function Logo({ small=false }) {
+  return <div className={`logo ${small ? 'small' : ''}`} aria-label="Web4U Media logo">
+    <div className="logoTop"><span className="w">W</span><span className="four">4</span><span className="u">U</span></div>
+    {!small && <div className="logoMedia">MEDIA</div>}
+  </div>;
 }
 
-function Hero(){return <section id="home" className="hero section">
-  <div className="orb orb1"/><div className="orb orb2"/><div className="orb orb3"/>
-  <div className="heroText">
-    <p className="eyebrow"><Sparkles size={16}/> Somerset web design • hosting • monthly care</p>
-    <h1>Colourful, fast websites for small businesses that need more enquiries.</h1>
-    <p className="lead">Web4U Media Ltd builds professional websites for local businesses across Somerset and the UK — with clear prices, modern design, reliable hosting and optional monthly support.</p>
-    <div className="actions"><a className="btn primary" href="#quote">Get my free quote <ArrowRight size={19}/></a><a className="btn ghost" href="#pricing">View prices</a></div>
-    <div className="trust"><span><Check/> No jargon</span><span><Check/> Mobile-first</span><span><Check/> Vercel-ready</span><span><Check/> You own your site</span></div>
-  </div>
-  <div className="heroShowcase">
-    <div className="logoPanel"><Logo compact /><div className="pulse"></div></div>
-    <div className="heroStats">
-      <div><Rocket/><strong>Launch from £349</strong><span>One-off website builds</span></div>
-      <div><LifeBuoy/><strong>Care from £19/mo</strong><span>Hosting & support</span></div>
-      <div><MousePointerClick/><strong>Built to convert</strong><span>Clear calls to action</span></div>
-    </div>
-  </div>
-</section>}
+function App() {
+  const [menu, setMenu] = useState(false);
+  const [quote, setQuote] = useState({ budget: '£500–£1,000', service: 'New website' });
+  const estimate = useMemo(() => {
+    if (quote.service === 'Hosting only') return 'Likely from £9–£19/month';
+    if (quote.service === 'Monthly management') return 'Likely from £29–£49/month';
+    if (quote.budget === 'Under £500') return 'Starter website from £299';
+    if (quote.budget === '£500–£1,000') return 'Business website from £549';
+    return 'Growth website from £899';
+  }, [quote]);
 
-function Services(){return <section id="services" className="section services"><div className="sectionHead"><p className="eyebrow"><Layers3 size={16}/> Services</p><h2>Everything a small business website needs — designed, launched and looked after.</h2><p>From a first website to a full refresh, Web4U Media keeps things simple: good design, clear content, strong performance and support after launch.</p></div><div className="cards">{services.map(([t,Icon,d])=><div className="card" key={t}><div className="iconWrap"><Icon className="icon"/></div><h3>{t}</h3><p>{d}</p></div>)}</div></section>}
+  const nav = ['Services','Prices','SEO','Work','Quote','Contact'];
+  return <>
+    <header className="siteHeader">
+      <a className="brand" href="#top"><Logo small /><span>Web4U Media</span></a>
+      <nav className="desktopNav">{nav.map(n => <a href={`#${n.toLowerCase()}`} key={n}>{n}</a>)}<a className="navCta" href="#quote">Get a quote</a></nav>
+      <button className="menuBtn" onClick={()=>setMenu(!menu)}>{menu ? <X/> : <Menu/>}</button>
+    </header>
+    {menu && <div className="mobileNav">{nav.map(n => <a onClick={()=>setMenu(false)} href={`#${n.toLowerCase()}`} key={n}>{n}</a>)}</div>}
 
-function Pricing(){return <section id="pricing" className="section pricing"><div className="sectionHead"><p className="eyebrow"><BadgePoundSterling size={16}/> Somerset-friendly pricing</p><h2>Professional websites without the heavy agency bill.</h2><p>Prices are intentionally positioned for small Somerset businesses that need to look credible online without paying premium agency rates.</p></div><div className="priceGrid">{packages.map(p=><PriceCard key={p.name} p={p}/>)}</div><div className="compare"><strong>Simple promise:</strong> no confusing bundles, no forced long-term contract, and no surprise charges. You get a clear written quote before work starts.</div></section>}
-function PriceCard({p}){return <div className={p.featured?'price featured':'price'}>{p.featured&&<span className="badge">Best value</span>}<h3>{p.name}</h3><p>{p.text}</p><div className="amount"><strong>{p.price}</strong><span>{p.note}</span></div><ul>{p.items.map(i=><li key={i}><Check/> {i}</li>)}</ul><a className="btn full" href="#quote">Ask about this</a></div>}
+    <main id="top">
+      <section className="hero">
+        <div className="heroGlow one"></div><div className="heroGlow two"></div>
+        <div className="heroText">
+          <p className="eyebrow"><Sparkles size={18}/> Somerset web design, hosting & website care</p>
+          <h1>Websites that look sharp, load fast and bring in enquiries.</h1>
+          <p className="lead">Web4U Media Ltd builds colourful, modern business websites for Somerset and UK clients — with hosting, SEO foundations and optional monthly management included.</p>
+          <div className="heroActions"><a className="primaryBtn" href="#quote">Start your quote <ArrowRight size={18}/></a><a className="secondaryBtn" href="#prices">View prices</a></div>
+          <div className="trust"><span><Star/> Competitive Somerset pricing</span><span><ShieldCheck/> SSL & backups</span><span><LineChart/> SEO-ready structure</span></div>
+        </div>
+        <div className="heroCard"><Logo/><div className="miniStats"><div><strong>£299+</strong><span>website builds</span></div><div><strong>£9/mo</strong><span>hosting</span></div><div><strong>£49/mo</strong><span>care plan</span></div></div></div>
+      </section>
 
-function Hosting(){return <section id="hosting" className="section hosting"><div className="split"><div className="stickyText"><p className="eyebrow"><Server size={16}/> Hosting & monthly care</p><h2>Keep the site fast, secure and up to date.</h2><p>Build cost and monthly support are kept separate, so you can start lean and add care when you need it.</p><div className="featureList"><span><LockKeyhole/> SSL included</span><span><Gauge/> Performance checks</span><span><Clock/> Monthly monitoring</span><span><MessageCircle/> Friendly support</span></div></div><div className="careGrid">{care.map(p=><div className={p.featured?'care featured':'care'} key={p.name}><span className="kicker">{p.kicker}</span><h3>{p.name}</h3><div className="carePrice">{p.price}</div><ul>{p.items.map(i=><li key={i}><Check/> {i}</li>)}</ul></div>)}</div></div></section>}
+      <section className="marquee"><span>Web design</span><span>Hosting</span><span>SEO</span><span>Maintenance</span><span>Landing pages</span><span>Local business websites</span></section>
 
-function SEO(){return <section id="seo" className="section seo"><div className="sectionHead"><p className="eyebrow"><Search size={16}/> SEO</p><h2>Built for search engines, written for real customers.</h2><p>SEO should not feel mysterious. Every site starts with the basics that help Google understand your business and help customers trust you.</p></div><div className="seoBox"><div><h3>Included SEO foundations</h3><p>Page titles, meta descriptions, headings, alt text guidance, internal links and clean page structure.</p></div><div><h3>Local Somerset targeting</h3><p>Service pages can target Taunton, Bridgwater, Yeovil, Minehead, Weston-super-Mare and surrounding towns.</p></div><div><h3>Monthly SEO support</h3><p>Optional content updates, search reports, improvement recommendations and local landing pages.</p></div></div></section>}
+      <section id="services" className="section darkPanel">
+        <div className="sectionHead"><p className="eyebrow">Featured services</p><h2>A complete website service, not just a pretty homepage.</h2><p>Inspired by top agency layouts with clear service cards, portfolio proof and conversion-focused quote routes.</p></div>
+        <div className="serviceGrid">{services.map((s,i)=><article className="serviceCard" key={s.title}><div className="iconWrap">{s.icon}</div><h3>{s.title}</h3><p>{s.text}</p><span>0{i+1}</span></article>)}</div>
+      </section>
 
-function Work(){return <section id="work" className="section work"><div className="sectionHead"><p className="eyebrow"><Star size={16}/> References</p><h2>Example website styles ready for real clients.</h2><p>Replace these with live case studies after your first Web4U Media projects go online.</p></div><div className="refs">{examples.map(([r,t],i)=><div className="ref" key={r}><div className="mock"><span>{String(i+1).padStart(2,'0')}</span></div><div className="stars">{[1,2,3,4,5].map(n=><Star key={n} fill="currentColor" size={15}/>)}</div><h3>{r}</h3><p>{t}</p></div>)}</div></section>}
+      <section id="prices" className="section priceSection">
+        <div className="sectionHead"><p className="eyebrow">Somerset-friendly pricing</p><h2>Professional websites without London agency pricing.</h2><p>Simple starting prices for small businesses. Final quote depends on pages, content, integrations and urgency.</p></div>
+        <div className="pricingGrid">{packages.map((p,i)=><article className={`priceCard ${i===1?'featured':''}`} key={p.name}><div className="tag">{p.tag}</div><h3>{p.name}</h3><div className="price">{p.price}</div>{p.items.map(it=><p className="tick" key={it}><Check size={16}/>{it}</p>)}<a href="#quote">Request this package <ChevronRight size={16}/></a></article>)}</div>
+      </section>
 
-function Quote(){return <section id="quote" className="section quote"><div className="quoteIntro"><p className="eyebrow"><Mail size={16}/> Online quote request</p><h2>Tell me what you need and I’ll price it clearly.</h2><p>This form opens your email app with the project details already filled in. Replace the email address in the code with your preferred Web4U Media inbox before launch.</p><div className="contact"><span><Mail/> hello@web4umedia.co.uk</span><span><MapPin/> Somerset & UK-wide</span><span><Phone/> Add your phone number</span></div></div><form className="form" onSubmit={(e)=>{e.preventDefault(); const f=new FormData(e.currentTarget); const body=[...f.entries()].map(([k,v])=>`${k}: ${v}`).join('%0D%0A'); window.location.href=`mailto:hello@web4umedia.co.uk?subject=Website quote request&body=${body}`}}>
-  <label>Name<input name="Name" required placeholder="Your name"/></label>
-  <label>Business<input name="Business" placeholder="Business name"/></label>
-  <label>Email<input name="Email" type="email" required placeholder="you@example.com"/></label>
-  <label>Location<input name="Location" placeholder="Taunton, Bridgwater, Yeovil..."/></label>
-  <label>Service<select name="Service"><option>New website</option><option>Website redesign</option><option>Hosting only</option><option>Monthly maintenance</option><option>SEO support</option></select></label>
-  <label>Budget<select name="Budget"><option>Under £500</option><option>£500 - £1,000</option><option>£1,000 - £2,000</option><option>Monthly plan preferred</option></select></label>
-  <label className="wide">Project details<textarea name="Details" rows="5" placeholder="What do you need the website to do?"></textarea></label>
-  <button className="btn primary wide" type="submit">Send quote request <ArrowRight size={18}/></button></form></section>}
+      <section className="section hostingSection">
+        <div className="split"><div><p className="eyebrow">Hosting & monthly care</p><h2>Keep your website online, updated and looked after.</h2><p>Choose hosting only, or a monthly website care plan for small changes, updates and support.</p></div><div className="hostingGrid">{hosting.map(h=><article key={h.name}><h3>{h.name}</h3><strong>{h.price}</strong>{h.items.map(x=><p key={x}><Check size={15}/>{x}</p>)}</article>)}</div></div>
+      </section>
 
-function Footer(){return <footer><div><Logo/><p>Affordable websites, hosting and care plans for Somerset small businesses.</p></div><div className="footerLinks"><a href="#pricing">Pricing</a><a href="#hosting">Hosting</a><a href="#quote">Quote</a></div><p className="tiny">© {new Date().getFullYear()} Web4U Media Ltd. Replace placeholder contact details before launch.</p></footer>}
-function App(){return <><Header/><main><Hero/><Services/><Pricing/><Hosting/><SEO/><Work/><Quote/></main><Footer/></>}
+      <section id="seo" className="section seoPanel">
+        <div className="seoText"><p className="eyebrow"><Globe2 size={18}/> Local SEO</p><h2>Built for customers searching in Somerset.</h2><p>Your website should be more than a digital business card. Every build includes sensible page titles, fast loading, mobile layout, service-area copy and Google-friendly structure.</p></div>
+        <div className="seoList"><div>Google Business Profile guidance</div><div>Service pages for local searches</div><div>Metadata and clean headings</div><div>Speed and mobile checks</div></div>
+      </section>
 
-createRoot(document.getElementById('root')).render(<App />)
+      <section id="work" className="section portfolioSection">
+        <div className="sectionHead"><p className="eyebrow">References / sample sectors</p><h2>Designed for real local businesses.</h2><p>Example project types Web4U Media can deliver for trades, care, hospitality, consultants and community organisations.</p></div>
+        <div className="portfolioGrid">{portfolio.map((p,i)=><article key={p[0]}><div className="screenMock"><span></span><span></span><span></span></div><h3>{p[0]}</h3><p>{p[1]}</p></article>)}</div>
+      </section>
+
+      <section className="section processSection">
+        <div className="sectionHead"><p className="eyebrow">Process</p><h2>Clear, quick and practical.</h2></div>
+        <div className="steps"><div><b>01</b><h3>Discovery</h3><p>We define your services, audience and best pages.</p></div><div><b>02</b><h3>Design</h3><p>You get a modern visual direction and clear content flow.</p></div><div><b>03</b><h3>Build</h3><p>Responsive, SEO-ready pages built for Vercel or managed hosting.</p></div><div><b>04</b><h3>Launch & care</h3><p>DNS, SSL, analytics and monthly support if required.</p></div></div>
+      </section>
+
+      <section id="quote" className="section quoteSection">
+        <div><p className="eyebrow">Online quote request</p><h2>Tell us what you need.</h2><p>Use this form layout on your site. For live submissions, connect it to Formspree, Netlify Forms, Basin or your own backend.</p><div className="estimate">Estimated starting point: <strong>{estimate}</strong></div></div>
+        <form className="quoteForm" onSubmit={e=>e.preventDefault()}>
+          <label>Name<input placeholder="Your name" /></label><label>Email<input placeholder="you@example.co.uk" /></label>
+          <label>Service<select value={quote.service} onChange={e=>setQuote({...quote, service:e.target.value})}><option>New website</option><option>Website redesign</option><option>Hosting only</option><option>Monthly management</option><option>SEO support</option></select></label>
+          <label>Budget<select value={quote.budget} onChange={e=>setQuote({...quote, budget:e.target.value})}><option>Under £500</option><option>£500–£1,000</option><option>£1,000+</option></select></label>
+          <label className="full">Project details<textarea placeholder="Tell us about your business, pages needed and timescale..."></textarea></label>
+          <button className="primaryBtn">Prepare quote request <ArrowRight size={18}/></button>
+        </form>
+      </section>
+    </main>
+
+    <footer id="contact"><div><Logo small/><p>Web4U Media Ltd — web design, hosting, SEO and website care for Somerset and UK small businesses.</p></div><div><h3>Contact</h3><p><Mail size={16}/> hello@web4umedia.co.uk</p><p>Somerset & remote UK projects</p></div></footer>
+  </>
+}
+
+createRoot(document.getElementById('root')).render(<App />);
