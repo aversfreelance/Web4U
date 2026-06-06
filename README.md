@@ -1,13 +1,19 @@
-# Web4U Media Ltd Website
+# Web4U Media Ltd website
 
-A Vite + React website ready for GitHub and Vercel.
+Modern Vite + React website for Web4U Media Ltd.
 
 ## Run locally
+```bash
 npm install
 npm run dev
+```
 
 ## Build
+```bash
 npm run build
+```
 
-## Deploy to Vercel
-Import the GitHub repository in Vercel. Build command: `npm run build`. Output directory: `dist`.
+## Vercel
+Import the GitHub repository into Vercel. Build command: `npm run build`. Output directory: `dist`.
+
+Before launch, replace placeholder email/phone details in `src/main.jsx`.
