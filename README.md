@@ -1,15 +1,22 @@
 # Web4U Media Ltd website
 
-Vite + React website for Web4U Media Ltd.
+A Vite + React website ready for GitHub and Vercel.
 
 ## Run locally
+```bash
 npm install
 npm run dev
+```
 
-## Deploy on Vercel
-Import the GitHub repository in Vercel.
-Build command: `npm run build`
-Output directory: `dist`
+## Build
+```bash
+npm run build
+```
 
-## Quote form
-The quote form is front-end only. Connect it to Formspree, Basin, Netlify Forms or your own backend before going live.
+## Deploy to Vercel
+Import the GitHub repository in Vercel. Use:
+- Build command: `npm run build`
+- Output directory: `dist`
+
+## Notes
+No `node_modules` folder is included. Vercel installs dependencies automatically.
